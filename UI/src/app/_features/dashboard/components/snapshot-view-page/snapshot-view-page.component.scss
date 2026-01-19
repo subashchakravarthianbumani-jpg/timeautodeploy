@@ -1,0 +1,75 @@
+.snapshot-container {
+  padding: 10px;
+}
+
+.snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 15px;
+}
+
+.snapshot-card {
+  background: #000;
+  border-radius: 10px;
+  overflow: hidden;
+  height: 200px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+}
+
+.snapshot-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.loading, .error, .no-data {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+}
+
+/* PAGINATION */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 25px;
+  gap: 15px;
+}
+
+.pagination button {
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: none;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.total-count {
+  text-align: center;
+  margin: 12px 0;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.back-btn {
+  padding: 8px 16px;
+  background: #007bff;
+  color: #fff;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.back-btn:hover {
+  background: #0056b3;
+}
+
+

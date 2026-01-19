@@ -1,0 +1,39 @@
+<div class="snapshot-container">
+
+    <button class="back-btn" (click)="goBack()">⬅ Back</button>
+
+
+  <div *ngIf="loading" class="loading">Loading snapshots...</div>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- TOTAL COUNT -->
+  <div class="total-count" *ngIf="totalSnapshots">
+    Total Snapshots: {{ totalSnapshots }}
+  </div>
+
+  <!-- GRID -->
+  <div class="snapshot-grid" *ngIf="snapshots.length">
+
+    <div class="snapshot-card" *ngFor="let img of snapshots">
+      <img [src]="img" />
+    </div>
+
+  </div>
+
+  <div *ngIf="!loading && !snapshots.length" class="no-data">
+    No snapshots found
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="pagination" *ngIf="totalPages > 1">
+
+    <button (click)="prevPage()" [disabled]="page === 1">◀ Prev</button>
+
+    <span>Page {{ page }} of {{ totalPages }}</span>
+
+    <button (click)="nextPage()" [disabled]="page === totalPages">Next ▶</button>
+
+  </div>
+
+</div>
