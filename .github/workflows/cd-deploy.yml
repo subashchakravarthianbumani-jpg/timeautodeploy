@@ -1,0 +1,45 @@
+name: CD - Deploy to EC2 (Docker)
+
+on:
+  workflow_run:
+    workflows:
+      - CI - Build and SonarQube Analysis
+    types:
+      - completed
+
+jobs:
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Setup SSH and Deploy
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+          ssh -o ServerAliveInterval=30 -o ServerAliveCountMax=5 \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+            set -e
+
+            sudo mkdir -p /var/www
+            sudo chown -R $USER:$USER /var/www
+
+            cd /var/www
+
+            if [ ! -d auto-deploy ]; then
+              git clone https://github.com/${GITHUB_REPOSITORY}.git auto-deploy
+            fi
+
+            cd auto-deploy
+            git pull origin main
+
+            docker compose down || true
+            docker compose build --progress=plain
+            docker compose up -d
+
+            echo "✅ DEPLOY SUCCESS"
+          EOF
